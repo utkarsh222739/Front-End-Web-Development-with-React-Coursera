@@ -6,6 +6,7 @@ import {
 } from "reactstrap";
 
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { addComment } from "../redux/ActionCreators";
 
 
 
@@ -32,10 +33,7 @@ class CommentForm extends Component {
     }
 
     handleCommentFormSubmit(values) {
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
-
-
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     toggleCommentFormModal() {
@@ -163,13 +161,6 @@ class CommentForm extends Component {
 
 /**........................ comment component ends ................................................. */
 
-
-
-
-
-
-
-
     function RenderDish({dish}) {
         if (dish != null) {
             return (
@@ -191,7 +182,7 @@ class CommentForm extends Component {
         }
     }
 
-    function RenderComments({dish,comments}){
+    function RenderComments({comments, addComment, dishId}) {
         if (comments == null) {
             return (<div></div>)
         }
@@ -218,7 +209,7 @@ class CommentForm extends Component {
                 <ul className='list-unstyled'>
                     {cmnts}
                 </ul>
-                <CommentForm dish={dish} comments={comments} />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         )
     }
@@ -253,7 +244,8 @@ class CommentForm extends Component {
 
                 <div className='row'>
                     <RenderDish dish={ props.dish } />
-                    <RenderComments dish={props.dish} comments={ props.comments } />
+                    <RenderComments comments={ props.comments} addComment={props.addComment} 
+                    dishId={props.dish.id} />
                 </div>
             </div>
         )
